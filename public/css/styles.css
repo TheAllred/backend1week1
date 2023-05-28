@@ -4,3 +4,167 @@
 *:after {
   box-sizing: border-box;
 }
+@media screen and (min-width: 768px) {
+ body{
+  background-image: url(/images/site/checkerboard.jpg);
+  background-repeat:repeat;
+ } 
+ #wrapper{
+  width: 85vw;
+  max-width: 900px;
+  margin: 10vw 5vw 10vw 5vw;
+  border:solid 2px lightskyblue;
+  border-radius: 15px;
+ }
+}
+
+body{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+#wrapper{
+  
+  padding: 3vw;
+  background-color: white;
+}
+#top-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.siteName *{
+  font-size: 1.5rem;
+  color: rgb(22, 0, 66);
+  text-decoration: none;
+}
+#tools *{
+  text-decoration: none;
+  color: rgb(22, 0, 66);
+}
+nav{
+  margin-top: 4vw;
+  padding: 1vw;
+  background-color: rgb(22, 0, 66);
+}
+nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+nav a{
+  color: white;
+  text-decoration: none;
+}
+nav a:hover{
+background-color: white;
+border-radius: 5px;
+color: black;
+}
+footer p{
+  margin: 3vw;
+
+}
+#home-wrapper h1{
+  font-size: 1.3rem;
+}
+.hero-wrapper{
+  height: 40vh;
+}
+.hero{
+  position: relative;
+}
+.hero .desc-box{
+  position: absolute;
+  top: 0;
+  left: 20vw;
+  background-color: rgba(106, 106, 106, 0.756);
+  z-index: 5;
+  padding: 3vw;
+}
+.hero .desc-box *{
+  color: rgb(0, 255, 255);
+}
+.hero .desc-box button{
+  color: white;
+  background-color: teal;
+  padding: 1vw;
+}
+.hero img{
+  position: absolute;
+  top: 3vw;
+  right: 10vw;
+  width: 50vw;
+  max-width: 400px;
+}
+.upgrades-reviews{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+
+@media (max-width: 767px) {
+  .upgrades-reviews {
+    grid-template-columns: 1fr;
+    grid-template-areas: "b"
+                         "a";
+  }
+  .upgrades{
+    grid-area: a;
+  }
+  .reviews{
+    grid-area: b;
+  }
+}
+
+
+.upgrades{
+  display: grid;
+  grid-template-areas: "t t"
+                       "a b"
+                       "c d"
+  ;
+  grid-template-columns: repeat(2,1fr);
+  grid-template-rows: repeat(3,1fr);
+gap: 2vw;
+}
+.upgrades h2{
+  grid-area: t;
+}
+.upgrade{
+  background-color:rgb(0, 216, 216);
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+#upgrade-1{grid-area: a;}
+#upgrade-2{grid-area: b;}
+#upgrade-3{grid-area: c;}
+#upgrade-4{grid-area: d;}
+
+.upgrade img{
+  width:6vw;
+}
+.reviews{
+  display: grid;
+  grid-template-areas: "t t"
+                       "a a"
+                       "a a"
+  ;
+  grid-template-columns: repeat(2,1fr);
+  grid-template-rows: repeat(3,1fr);
+gap: 2vw;
+}
+
+
+.reviews h2{
+  grid-area: t;
+}
+.reviews ul{
+  grid-area: a;
+}
+.reviews ul li{
+  margin-top: 3vw;
+}
