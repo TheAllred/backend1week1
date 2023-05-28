@@ -26,6 +26,8 @@ app.use(require("./routes/static"));
 
 // index route
 app.get("/", baseController.buildHome);
+// Inventory routes
+app.use("/inv", require("./routes/inventoryRoute"));
 // custom route
 app.get("/custom", function (req, res) {
   res.render("custom", { title: "Custom" });
