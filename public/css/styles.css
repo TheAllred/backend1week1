@@ -168,3 +168,20 @@ gap: 2vw;
 .reviews ul li{
   margin-top: 3vw;
 }
+
+#inv-display{
+display: flex;
+flex-wrap: wrap;
+}
+
+.inv-item{
+
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  margin: 3rem;
+  padding: 1vw;
+}
+
+.inv-item a{
+  color: black;
+  text-decoration: none;
+}

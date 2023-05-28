@@ -32,7 +32,7 @@ Util.buildClassificationGrid = async function (data) {
   if (data.length > 0) {
     grid = '<ul id="inv-display">';
     data.forEach((vehicle) => {
-      grid += "<li>";
+      grid += '<div class="inv-item">';
       grid +=
         '<a href="../../inv/detail/' +
         vehicle.inv_id +
@@ -48,7 +48,7 @@ Util.buildClassificationGrid = async function (data) {
         vehicle.inv_model +
         ' on CSE Motors" /></a>';
       grid += '<div class="namePrice">';
-      grid += "<hr />";
+
       grid += "<h2>";
       grid +=
         '<a href="../../inv/detail/' +
@@ -68,7 +68,7 @@ Util.buildClassificationGrid = async function (data) {
         new Intl.NumberFormat("en-US").format(vehicle.inv_price) +
         "</span>";
       grid += "</div>";
-      grid += "</li>";
+      grid += "</div>";
     });
     grid += "</ul>";
   } else {
@@ -76,5 +76,13 @@ Util.buildClassificationGrid = async function (data) {
   }
   return grid;
 };
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for
+ * General Error Handling
+ **************************************** */
+Util.handleErrors = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
 
 module.exports = Util;
