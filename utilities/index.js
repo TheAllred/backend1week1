@@ -77,6 +77,33 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
+Util.buildDetailedView = async function (data) {
+  console.log(data);
+  let view = "";
+
+  if (data[0]) {
+    view +=
+      "<section><h1>" +
+      data[0].inv_year +
+      " " +
+      data[0].inv_make +
+      " " +
+      data[0].inv_model +
+      "</h1>";
+    view += `<img src="${data[0].inv_image}" alt="${data[0].inv_make} ${data[0].inv_model}"/></section>`;
+    view += `<section class="detail-desc">
+    <h2>$${parseInt(data[0].inv_price).toLocaleString("en-US")}</h2>`;
+    view += `<p>${data[0].inv_description}</p>`;
+    view += `<p>${parseInt(data[0].inv_miles).toLocaleString(
+      "en-US"
+    )} Miles</p>`;
+    view += `<p>Color: ${data[0].inv_color}</p></section>`;
+  } else {
+    view += "<p>Vehicle not Found</p>";
+  }
+  return view;
+};
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for

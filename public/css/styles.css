@@ -57,6 +57,7 @@ nav ul {
 nav a{
   color: white;
   text-decoration: none;
+  
 }
 nav a:hover{
 background-color: white;
@@ -184,4 +185,72 @@ flex-wrap: wrap;
 .inv-item a{
   color: black;
   text-decoration: none;
+}
+#detail-page{
+  display: block;
+}
+
+#detail-page section img{
+  width: 35vw;
+  min-width: 300px;
+}
+
+@media (min-width: 768px) {
+  #detail-page {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  #detail-page section {
+    flex: 0 0 calc(33.33% - 20px); /* Adjust the percentage and margin as per your needs */
+    margin: 10px;
+  }
+}
+
+.container {
+  width: 300px;
+  padding: 16px;
+  background-color: #fff;
+  margin: 0 auto;
+  margin-top: 100px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input:required:invalid, input:focus:invalid {
+  border-color: red;
+ }
+ input:required:valid {
+  border-color: green;
+ }
+
+
+button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.signup {
+  text-align: center;
 }
