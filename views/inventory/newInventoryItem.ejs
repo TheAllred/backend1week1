@@ -1,0 +1,55 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<form action="/newvehicle" method="post">
+  <h2>Add New Inventory Item</h2>
+
+  <label for="classification">Classification:</label>
+  <select name="classification" id="classification-select">
+    <%- options %>
+  </select>
+  <br />
+
+  <label for="make">Make:</label>
+  <input type="text" id="make" name="make" required />
+
+  <label for="model">Model:</label>
+  <input type="text" id="model" name="model" required />
+
+  <label for="year">Year:</label>
+  <input type="text" id="year" name="year" pattern="[0-9]{4}" required />
+
+  <label for="color">Color:</label>
+  <input type="text" id="color" name="color" required />
+
+  <label for="mileage">Mileage:</label>
+  <input type="text" id="mileage" name="mileage" pattern="[0-9]+" required />
+
+  <label for="description">Description:</label>
+  <br />
+  <textarea id="description" name="description" required></textarea>
+  <br />
+
+  <label for="price">Price:</label>
+  <input type="text" id="price" name="price" pattern="[0-9]+" required />
+
+  <label for="imagePath">Image Path:</label>
+  <input
+    type="text"
+    id="imagePath"
+    name="imagePath"
+    value="/images/vehicles/no-image.png"
+    required
+  />
+
+  <label for="thumbnailPath">Thumbnail Path:</label>
+  <input
+    type="text"
+    id="thumbnailPath"
+    name="thumbnailPath"
+    value="/images/vehicles/no-image.png"
+    required
+  />
+
+  <input type="submit" value="Submit" />
+</form>

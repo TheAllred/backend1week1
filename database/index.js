@@ -1,5 +1,5 @@
-const { Pool } = require("pg");
-require("dotenv").config();
+const { Pool } = require('pg');
+require('dotenv').config();
 /* ***************
  * Connection Pool
  * SSL Object needed for local testing of app
@@ -7,7 +7,7 @@ require("dotenv").config();
  * If - else will make determination which to use
  * *************** */
 let pool;
-if (process.env.NODE_ENV == "development") {
+if (process.env.NODE_ENV == 'development') {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -21,10 +21,10 @@ if (process.env.NODE_ENV == "development") {
     async query(text, params) {
       try {
         const res = await pool.query(text, params);
-        console.log("executed query", { text });
+        console.log('executed query', { text });
         return res;
       } catch (error) {
-        console.error("error in query", { text });
+        console.error('error in query', { text });
         throw error;
       }
     },
