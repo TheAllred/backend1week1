@@ -7,7 +7,6 @@ const validate = {};
  *  Registration Data Validation Rules
  * ********************************* */
 validate.classificationRules = () => {
-  console.log('Classification rule');
   return [
     // firstname is required and must be string
     body('classification')
@@ -32,7 +31,6 @@ validate.checkClassificationData = async (req, res, next) => {
   const { classification } = req.body;
   let errors = [];
   errors = validationResult(req);
-  console.log(errors);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
     res.render('inventory/newClassification', {

@@ -1,4 +1,4 @@
-const invModel = require('../models/inventory-model');
+const invModel = require("../models/inventory-model");
 const Util = {};
 
 /* ************************
@@ -6,10 +6,10 @@ const Util = {};
  ************************** */
 Util.getNav = async function (req, res, next) {
   let data = await invModel.getClassifications();
-  let list = '<ul>';
+  let list = "<ul>";
   list += '<li><a href="/" title="Home page">Home</a></li>';
   data.rows.forEach((row) => {
-    list += '<li>';
+    list += "<li>";
     list +=
       '<a href="/inv/type/' +
       row.classification_id +
@@ -17,21 +17,21 @@ Util.getNav = async function (req, res, next) {
       row.classification_name +
       ' vehicles">' +
       row.classification_name +
-      '</a>';
-    list += '</li>';
+      "</a>";
+    list += "</li>";
   });
-  list += '</ul>';
+  list += "</ul>";
   return list;
 };
 
 Util.buildClassificationSelect = async function (req, res, next) {
   let data = await invModel.getClassifications();
-  let options = '';
+  let options = "";
 
   data.rows.forEach((row) => {
-    options += '<option ';
+    options += "<option ";
     options += 'value="' + row.classification_id + '">';
-    options += row.classification_name + '</option>';
+    options += row.classification_name + "</option>";
   });
   return options;
 };
@@ -50,39 +50,39 @@ Util.buildClassificationGrid = async function (data) {
         vehicle.inv_id +
         '" title="View ' +
         vehicle.inv_make +
-        ' ' +
+        " " +
         vehicle.inv_model +
         'details"><img src="' +
         vehicle.inv_thumbnail +
         '" alt="Image of ' +
         vehicle.inv_make +
-        ' ' +
+        " " +
         vehicle.inv_model +
         ' on CSE Motors" /></a>';
       grid += '<div class="namePrice">';
 
-      grid += '<h2>';
+      grid += "<h2>";
       grid +=
         '<a href="../../inv/detail/' +
         vehicle.inv_id +
         '" title="View ' +
         vehicle.inv_make +
-        ' ' +
+        " " +
         vehicle.inv_model +
         ' details">' +
         vehicle.inv_make +
-        ' ' +
+        " " +
         vehicle.inv_model +
-        '</a>';
-      grid += '</h2>';
+        "</a>";
+      grid += "</h2>";
       grid +=
-        '<span>$' +
-        new Intl.NumberFormat('en-US').format(vehicle.inv_price) +
-        '</span>';
-      grid += '</div>';
-      grid += '</div>';
+        "<span>$" +
+        new Intl.NumberFormat("en-US").format(vehicle.inv_price) +
+        "</span>";
+      grid += "</div>";
+      grid += "</div>";
     });
-    grid += '</ul>';
+    grid += "</ul>";
   } else {
     grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   }
@@ -90,29 +90,33 @@ Util.buildClassificationGrid = async function (data) {
 };
 
 Util.buildDetailedView = async function (data) {
-  let view = '';
+  let view = "";
 
   if (data[0]) {
     view +=
-      '<section><h1>' +
+      "<section><h1>" +
       data[0].inv_year +
-      ' ' +
+      " " +
       data[0].inv_make +
-      ' ' +
+      " " +
       data[0].inv_model +
-      '</h1>';
+      "</h1>";
     view += `<img src="${data[0].inv_image}" alt="${data[0].inv_make} ${data[0].inv_model}"/></section>`;
     view += `<section class="detail-desc">
-    <h2>$${parseInt(data[0].inv_price).toLocaleString('en-US')}</h2>`;
+    <h2>$${parseInt(data[0].inv_price).toLocaleString("en-US")}</h2>`;
     view += `<p>${data[0].inv_description}</p>`;
     view += `<p>${parseInt(data[0].inv_miles).toLocaleString(
-      'en-US'
+      "en-US"
     )} Miles</p>`;
     view += `<p>Color: ${data[0].inv_color}</p></section>`;
   } else {
-    view += '<p>Vehicle not Found</p>';
+    view += "<p>Vehicle not Found</p>";
   }
   return view;
+};
+
+Util.causeError = function () {
+  null.toLocaleString;
 };
 
 /* ****************************************
