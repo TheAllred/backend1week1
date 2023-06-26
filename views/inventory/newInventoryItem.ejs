@@ -1,37 +1,85 @@
 <% if (title) { %>
 <h1><%= title %></h1>
-<% } else { res.redirect('/') } %> <%- messages() %>
-<form action="/newvehicle" method="post">
+<% } else { res.redirect('/') } %> <%- messages() %> <% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<form action="/inv/newvehicle" method="post">
   <h2>Add New Inventory Item</h2>
 
   <label for="classification">Classification:</label>
-  <select name="classification" id="classification-select">
+  <select name="classification" id="classification-select" required>
     <%- options %>
   </select>
   <br />
 
   <label for="make">Make:</label>
-  <input type="text" id="make" name="make" required />
+  <input
+    type="text"
+    id="make"
+    name="make"
+    required
+    value="<%= locals.make %>"
+  />
 
   <label for="model">Model:</label>
-  <input type="text" id="model" name="model" required />
+  <input
+    type="text"
+    id="model"
+    name="model"
+    required
+    value="<%= locals.model %>"
+  />
 
   <label for="year">Year:</label>
-  <input type="text" id="year" name="year" pattern="[0-9]{4}" required />
+  <input
+    type="text"
+    id="year"
+    name="year"
+    pattern="[0-9]{4}"
+    required
+    value="<%= locals.year %>"
+  />
 
   <label for="color">Color:</label>
-  <input type="text" id="color" name="color" required />
+  <input
+    type="text"
+    id="color"
+    name="color"
+    required
+    value="<%= locals.color %>"
+  />
 
   <label for="mileage">Mileage:</label>
-  <input type="text" id="mileage" name="mileage" pattern="[0-9]+" required />
+  <input
+    type="text"
+    id="mileage"
+    name="mileage"
+    pattern="[0-9]+"
+    required
+    value="<%= locals.mileage %>"
+  />
 
   <label for="description">Description:</label>
   <br />
-  <textarea id="description" name="description" required></textarea>
+  <textarea id="description" name="description" required>
+<%= locals.description %></textarea
+  >
   <br />
 
   <label for="price">Price:</label>
-  <input type="text" id="price" name="price" pattern="[0-9]+" required />
+  <input
+    type="text"
+    id="price"
+    name="price"
+    pattern="[0-9]+"
+    required
+    value="<%= locals.price %>"
+  />
 
   <label for="imagePath">Image Path:</label>
   <input
@@ -40,6 +88,7 @@
     name="imagePath"
     value="/images/vehicles/no-image.png"
     required
+    value="<%= locals.imagePath %>"
   />
 
   <label for="thumbnailPath">Thumbnail Path:</label>
@@ -49,6 +98,7 @@
     name="thumbnailPath"
     value="/images/vehicles/no-image.png"
     required
+    value="<%= locals.thumbnailPath %>"
   />
 
   <input type="submit" value="Submit" />

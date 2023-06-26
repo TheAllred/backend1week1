@@ -24,13 +24,19 @@ Util.getNav = async function (req, res, next) {
   return list;
 };
 
-Util.buildClassificationSelect = async function (req, res, next) {
+Util.buildClassificationSelect = async function (selected = 0) {
   let data = await invModel.getClassifications();
   let options = "";
+  selected = parseInt(selected);
+  options += "<option ";
+  options += `value="" ${!selected ? "selected" : ""} disabled>`;
+  options += `Select a classification</option>`;
 
   data.rows.forEach((row) => {
     options += "<option ";
-    options += 'value="' + row.classification_id + '">';
+    options += `value=${row.classification_id} ${
+      selected === row.classification_id ? "selected" : ""
+    }>`;
     options += row.classification_name + "</option>";
   });
   return options;
@@ -84,8 +90,9 @@ Util.buildClassificationGrid = async function (data) {
     });
     grid += "</ul>";
   } else {
-    grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>';
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   }
+  console.log(grid);
   return grid;
 };
 

@@ -1,11 +1,11 @@
-const pool = require('../database/');
+const pool = require("../database/");
 
 /* ***************************
  *  Get all classification data
  * ************************** */
 async function getClassifications() {
   return await pool.query(
-    'SELECT * FROM public.classification ORDER BY classification_name'
+    "SELECT * FROM public.classification ORDER BY classification_name"
   );
 }
 
@@ -15,12 +15,12 @@ async function getClassifications() {
 async function getInventoryByClassificationId(classification_id) {
   try {
     const data = await pool.query(
-      'SELECT * FROM public.inventory AS i JOIN public.classification AS c ON i.classification_id = c.classification_id WHERE i.classification_id = $1',
+      "SELECT * FROM public.inventory AS i JOIN public.classification AS c ON i.classification_id = c.classification_id WHERE i.classification_id = $1",
       [classification_id]
     );
     return data.rows;
   } catch (error) {
-    console.error('getclassificationsbyid error ' + error);
+    console.error("getclassificationsbyid error " + error);
   }
 }
 
@@ -30,12 +30,12 @@ async function getInventoryByClassificationId(classification_id) {
 async function getInventoryByDetailId(detail_id) {
   try {
     const data = await pool.query(
-      'SELECT * FROM public.inventory AS i WHERE i.inv_id = $1',
+      "SELECT * FROM public.inventory AS i WHERE i.inv_id = $1",
       [detail_id]
     );
     return data.rows;
   } catch (error) {
-    console.error('getdetailbyid error ' + error);
+    console.error("getdetailbyid error " + error);
   }
 }
 
@@ -84,7 +84,7 @@ async function newVehicle(
 
 async function checkExistingClassification(classification_name) {
   try {
-    const sql = 'SELECT * FROM classification WHERE classification_name = $1';
+    const sql = "SELECT * FROM classification WHERE classification_name = $1";
     const classification = await pool.query(sql, [classification_name]);
     return classification.rowCount;
   } catch (error) {
@@ -98,4 +98,5 @@ module.exports = {
   getInventoryByDetailId,
   newClassification,
   checkExistingClassification,
+  newVehicle,
 };
