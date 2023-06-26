@@ -12,8 +12,6 @@ invCont.buildByClassificationId = async function (req, res, next) {
   let grid = await utilities.buildClassificationGrid(data);
   let nav = await utilities.getNav();
   let className = "";
-  console.log(data);
-  console.log(data.length);
   if (data.length > 0) {
     className = data[0].classification_name;
   } else {

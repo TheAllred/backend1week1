@@ -92,7 +92,6 @@ Util.buildClassificationGrid = async function (data) {
   } else {
     grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>';
   }
-  console.log(grid);
   return grid;
 };
 
