@@ -6,7 +6,27 @@ const utilities = require("../utilities");
 const classValidate = require("../utilities/classification-validation");
 const invValidate = require("../utilities/inv-validation");
 
-router.get("/", utilities.handleErrors(invController.buildManagementPage));
+router.get(
+  "/",
+  utilities.checkJWTToken,
+  utilities.checkIfAuthorized,
+  utilities.handleErrors(invController.buildManagementPage)
+);
+
+// Route to get inventory in JSON
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON)
+);
+
+router.get(
+  "/edit/:inventoryId",
+  utilities.handleErrors(invController.buildInventoryManagementPage)
+);
+router.get(
+  "/delete/:inventoryId",
+  utilities.handleErrors(invController.buildDeleteConfirmationPage)
+);
 
 // Route to build inventory by classification view
 router.get(
@@ -39,4 +59,14 @@ router.post(
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.createNewVehicle)
 );
+
+router.post(
+  "/update",
+  invValidate.inventoryRules(),
+  invValidate.checkUpdateData,
+  utilities.handleErrors(invController.updateVehicle)
+);
+
+router.post("/delete", utilities.handleErrors(invController.deleteVehicle));
+
 module.exports = router;

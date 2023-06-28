@@ -52,9 +52,12 @@ invCont.buildByDetailId = async function (req, res, next) {
 
 invCont.buildManagementPage = async function (req, res, next) {
   let nav = await utilities.getNav();
+  const classificationSelectOptions =
+    await utilities.buildClassificationSelect();
   res.render("inventory/management", {
     title: "Inventory Management",
     nav,
+    classificationSelectOptions,
   });
 };
 
@@ -136,6 +139,158 @@ invCont.createNewVehicle = async function (req, res, next) {
       options,
       errors: null,
     });
+  }
+};
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id);
+  const invData = await invModel.getInventoryByClassificationId(
+    classification_id
+  );
+  if (invData[0].inv_id) {
+    return res.json(invData);
+  } else {
+    next(new Error("No data returned"));
+  }
+};
+
+invCont.buildInventoryManagementPage = async function (req, res, next) {
+  const inventoryId = parseInt(req.params.inventoryId);
+  let nav = await utilities.getNav();
+  const inventoryData = await invModel.getInventoryByDetailId(inventoryId);
+  const name = inventoryData[0].inv_make + " " + inventoryData[0].inv_model;
+  let options = await utilities.buildClassificationSelect(
+    inventoryData[0].classification_id
+  );
+  res.render("inventory/editInventoryItem", {
+    title: "Edit " + name,
+    nav,
+    options,
+    errors: null,
+    inv_id: inventoryData[0].inv_id,
+    inv_make: inventoryData[0].inv_make,
+    inv_model: inventoryData[0].inv_model,
+    inv_year: inventoryData[0].inv_year,
+    inv_description: inventoryData[0].inv_description,
+    inv_image: inventoryData[0].inv_image,
+    inv_thumbnail: inventoryData[0].inv_thumbnail,
+    inv_price: inventoryData[0].inv_price,
+    inv_miles: inventoryData[0].inv_miles,
+    inv_color: inventoryData[0].inv_color,
+    classification_id: inventoryData[0].classification_id,
+  });
+};
+
+invCont.buildInventoryManagementPage = async function (req, res, next) {
+  const inventoryId = parseInt(req.params.inventoryId);
+  let nav = await utilities.getNav();
+  const inventoryData = await invModel.getInventoryByDetailId(inventoryId);
+  const name = inventoryData[0].inv_make + " " + inventoryData[0].inv_model;
+  let options = await utilities.buildClassificationSelect(
+    inventoryData[0].classification_id
+  );
+  res.render("inventory/editInventoryItem", {
+    title: "Edit " + name,
+    nav,
+    options,
+    errors: null,
+    inv_id: inventoryData[0].inv_id,
+    inv_make: inventoryData[0].inv_make,
+    inv_model: inventoryData[0].inv_model,
+    inv_year: inventoryData[0].inv_year,
+    inv_description: inventoryData[0].inv_description,
+    inv_image: inventoryData[0].inv_image,
+    inv_thumbnail: inventoryData[0].inv_thumbnail,
+    inv_price: inventoryData[0].inv_price,
+    inv_miles: inventoryData[0].inv_miles,
+    inv_color: inventoryData[0].inv_color,
+    classification_id: inventoryData[0].classification_id,
+  });
+};
+
+// Update vehicle
+invCont.updateVehicle = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const updated_vehicle = req.body;
+  const updateResult = await invModel.updateVehicle(
+    updated_vehicle.make,
+    updated_vehicle.model,
+    updated_vehicle.year,
+    updated_vehicle.description,
+    updated_vehicle.imagePath,
+    updated_vehicle.thumbnailPath,
+    updated_vehicle.price,
+    updated_vehicle.mileage,
+    updated_vehicle.color,
+    updated_vehicle.classification,
+    updated_vehicle.inv_id
+  );
+  if (updateResult) {
+    const itemName = updateResult.inv_make + " " + updateResult.inv_model;
+    req.flash("notice", `The ${itemName} was successfully updated.`);
+    res.redirect("/inv/");
+  } else {
+    req.flash("notice", "Sorry, creating a new vehicle failed.");
+    const itemName = updated_vehicle.inv_make + " " + updated_vehicle.inv_model;
+    let options = await utilities.buildClassificationSelect(
+      updated_vehicle.classification
+    );
+    res.render("inventory/editInventoryItem", {
+      title: "Edit " + itemName,
+      nav,
+      options,
+      errors: null,
+      inv_id: updated_vehicle.inv_id,
+      inv_make: updated_vehicle.inv_make,
+      inv_model: updated_vehicle.inv_model,
+      inv_year: updated_vehicle.inv_year,
+      inv_description: updated_vehicle.inv_description,
+      inv_image: updated_vehicle.inv_image,
+      inv_thumbnail: updated_vehicle.inv_thumbnail,
+      inv_price: updated_vehicle.inv_price,
+      inv_miles: updated_vehicle.inv_miles,
+      inv_color: updated_vehicle.inv_color,
+      classification_id: updated_vehicle.classification_id,
+    });
+  }
+};
+
+invCont.buildDeleteConfirmationPage = async function (req, res, next) {
+  const inventoryId = parseInt(req.params.inventoryId);
+  let nav = await utilities.getNav();
+  const inventoryData = await invModel.getInventoryByDetailId(inventoryId);
+  const name = inventoryData[0].inv_make + " " + inventoryData[0].inv_model;
+  let options = await utilities.buildClassificationSelect(
+    inventoryData[0].classification_id
+  );
+  res.render("inventory/delete-confirm", {
+    title: "Confirm Deletion of " + name,
+    nav,
+    options,
+    errors: null,
+    inv_id: inventoryData[0].inv_id,
+    inv_make: inventoryData[0].inv_make,
+    inv_model: inventoryData[0].inv_model,
+    inv_year: inventoryData[0].inv_year,
+    inv_price: inventoryData[0].inv_price,
+    classification_id: inventoryData[0].classification_id,
+  });
+};
+
+// Delete vehicle
+invCont.deleteVehicle = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const deleted_vehicle = req.body;
+  const deleteResult = await invModel.deleteVehicle(deleted_vehicle.inv_id);
+  if (deleteResult) {
+    req.flash("notice", `The vehicle was successfully deleted.`);
+    res.redirect("/inv/");
+  } else {
+    req.flash("notice", "Sorry, deleting vehicle failed.");
+    res.redirect(`/inv/delete/${deleted_vehicle.inv_id}}`);
   }
 };
 

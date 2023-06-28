@@ -1,0 +1,107 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %> <% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<form id="updateForm" action="/inv/update" method="post">
+  <h2>Edit Inventory Item</h2>
+
+  <label for="classification">Classification:</label>
+  <select name="classification" id="classification-select" required>
+    <%- options %>
+  </select>
+  <br />
+
+  <label for="make">Make:</label>
+  <input
+    type="text"
+    id="make"
+    name="make"
+    required
+    value="<%=inv_make? inv_make: locals.make %>"
+  />
+
+  <label for="model">Model:</label>
+  <input
+    type="text"
+    id="model"
+    name="model"
+    required
+    value="<%=inv_model? inv_model: locals.model %>"
+  />
+
+  <label for="year">Year:</label>
+  <input
+    type="text"
+    id="year"
+    name="year"
+    pattern="[0-9]{4}"
+    required
+    value="<%=inv_year? inv_year: locals.year %>"
+  />
+
+  <label for="color">Color:</label>
+  <input
+    type="text"
+    id="color"
+    name="color"
+    required
+    value="<%=inv_color? inv_color: locals.color %>"
+  />
+
+  <label for="mileage">Mileage:</label>
+  <input
+    type="text"
+    id="mileage"
+    name="mileage"
+    pattern="[0-9]+"
+    required
+    value="<%=inv_miles? inv_miles: locals.mileage %>"
+  />
+
+  <label for="description">Description:</label>
+  <br />
+  <textarea id="description" name="description" required>
+<%=inv_description? inv_description: locals.description %>
+</textarea
+  >
+  <br />
+
+  <label for="price">Price:</label>
+  <input
+    type="text"
+    id="price"
+    name="price"
+    pattern="[0-9]+"
+    required
+    value="<%=inv_price? inv_price: locals.price %>"
+  />
+
+  <label for="imagePath">Image Path:</label>
+  <input
+    type="text"
+    id="imagePath"
+    name="imagePath"
+    required
+    value="<%=inv_image ? inv_image: locals.imagePath %>"
+  />
+
+  <label for="thumbnailPath">Thumbnail Path:</label>
+  <input
+    type="text"
+    id="thumbnailPath"
+    name="thumbnailPath"
+    required
+    value="<%=inv_thumbnail? inv_thumbnail: locals.thumbnailPath %>"
+  />
+
+  <button disabled type="submit">Update Vehicle</button>
+
+  <input type="hidden" name="inv_id" value="<%=inv_id? inv_id : "" %>" >
+</form>
+<script src="/js/inv-update.js"></script>

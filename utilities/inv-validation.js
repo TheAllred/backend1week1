@@ -60,7 +60,7 @@ validate.inventoryRules = () => {
 };
 
 /* ******************************
- * Check data and return errors or continue to registration
+ * Check data and return errors or continue
  * ***************************** */
 validate.checkInventoryData = async (req, res, next) => {
   const {
@@ -94,6 +94,51 @@ validate.checkInventoryData = async (req, res, next) => {
       price,
       imagePath,
       thumbnailPath,
+    });
+    return;
+  }
+  next();
+};
+
+/* ******************************
+ * Check data and return errors or continue to update vehicle
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const {
+    classification,
+    make,
+    model,
+    year,
+    color,
+    mileage,
+    description,
+    price,
+    imagePath,
+    thumbnailPath,
+    inv_id,
+  } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    let name = make + " " + model;
+    let options = await utilities.buildClassificationSelect(classification);
+    res.status(201).render("inventory/editInventoryItem", {
+      title: "Edit " + name,
+      errors,
+      nav,
+      options,
+      inv_id: inv_id,
+      inv_make: make,
+      inv_model: model,
+      inv_year: year,
+      inv_description: description,
+      inv_image: imagePath,
+      inv_thumbnail: thumbnailPath,
+      inv_price: price,
+      inv_miles: mileage,
+      inv_color: color,
+      classification_id: classification,
     });
     return;
   }

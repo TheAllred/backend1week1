@@ -1,0 +1,66 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %> <% if (errors) { %>
+<ul class="notice">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } %>
+
+<form id="deleteForm" action="/inv/delete" method="post">
+  <h2>Delete Inventory Item</h2>
+  <p>Confirm Deletion - The delete is permanent.</p>
+
+  <label for="classification">Classification:</label>
+  <select disabled name="classification" id="classification-select" required>
+    <%- options %>
+  </select>
+  <br />
+
+  <label for="make">Make:</label>
+  <input
+    readonly
+    type="text"
+    id="make"
+    name="make"
+    required
+    value="<%=inv_make? inv_make: locals.make %>"
+  />
+  <label for="model">Model:</label>
+  <input
+    readonly
+    type="text"
+    id="model"
+    name="model"
+    required
+    value="<%=inv_model? inv_model: locals.model %>"
+  />
+  <label for="year">Year:</label>
+  <input
+    readonly
+    type="text"
+    id="year"
+    name="year"
+    pattern="[0-9]{4}"
+    required
+    value="<%=inv_year? inv_year: locals.year %>"
+  />
+
+  <br />
+
+  <label for="price">Price:</label>
+  <input
+    readonly
+    type="text"
+    id="price"
+    name="price"
+    pattern="[0-9]+"
+    required
+    value="<%=inv_price? inv_price: locals.price %>"
+  />
+
+  <button type="submit">Delete Vehicle</button>
+
+  <input type="hidden" name="inv_id" value="<%=inv_id? inv_id : "" %>" >
+</form>

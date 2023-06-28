@@ -1,5 +1,12 @@
 <% if (title) { %>
 <h1><%= title %></h1>
-<% } else { res.redirect('/') } %> <%# messages() %>
+<% } else { res.redirect('/') } %> <%- messages() %>
 <a href="/inv/newclassification">Create Classification</a>
 <a href="/inv/newvehicle">Create New Inventory Item</a>
+<h2>Manage Inventory</h2>
+<select name="classification" id="classification-select" required>
+  <%- classificationSelectOptions %>
+</select>
+<table id="inventoryDisplay"></table>
+<noscript>JavaScript must be enabled to use this page.</noscript>
+<script src="/js/inventory.js"></script>
