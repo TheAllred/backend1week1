@@ -4,6 +4,7 @@ const router = new express.Router();
 const accountController = require("../controllers/accountController");
 const utilities = require("../utilities");
 const regValidate = require("../utilities/account-validation");
+const messageValidate = require("../utilities/message-validation");
 
 /* ********
  * Deliver Account Management View
@@ -37,6 +38,7 @@ router.post(
 
 router.get(
   "/update/:accountId",
+  utilities.checkLogin,
   utilities.handleErrors(accountController.buildUpdatePage)
 );
 
@@ -55,5 +57,71 @@ router.post(
 );
 
 router.get("/logout", utilities.handleErrors(accountController.logout));
+
+router.get(
+  "/inbox",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildInboxPage)
+);
+router.get(
+  "/inbox/archive",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildInboxArchivedPage)
+);
+
+router.get(
+  "/inbox/newMessage",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildNewMessagePage)
+);
+
+router.post(
+  "/inbox/newMessage",
+  utilities.checkLogin,
+  messageValidate.messageRules(),
+  messageValidate.checkNewMessage,
+  utilities.handleErrors(accountController.sendMessage)
+);
+
+router.get(
+  "/inbox/:messageId",
+  utilities.checkLogin,
+  utilities.checkMessageView,
+  utilities.handleErrors(accountController.buildDetailMessageView)
+);
+
+router.post(
+  "/inbox/:messageId",
+  utilities.checkLogin,
+  utilities.checkMessageView,
+  utilities.handleErrors(accountController.markMessageAsRead)
+);
+router.post(
+  "/inbox/archive/:messageId",
+  utilities.checkLogin,
+  utilities.checkMessageView,
+  utilities.handleErrors(accountController.markMessageAsArchived)
+);
+
+router.get(
+  "/inbox/archive/:messageId",
+  utilities.checkLogin,
+  utilities.checkMessageView,
+  utilities.handleErrors(accountController.buildDetailMessageView)
+);
+router.get(
+  "/inbox/reply/:messageId",
+  utilities.checkLogin,
+  utilities.checkMessageView,
+  utilities.handleErrors(accountController.buildReplyMessageView)
+);
+
+router.post(
+  "/inbox/reply/:messageId",
+  utilities.checkLogin,
+  messageValidate.replyRules(),
+  messageValidate.checkNewReply,
+  utilities.handleErrors(accountController.sendReply)
+);
 
 module.exports = router;

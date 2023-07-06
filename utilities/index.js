@@ -1,6 +1,9 @@
 const invModel = require("../models/inventory-model");
+const accountModel = require("../models/account-model");
+const messageModel = require("../models/message-model");
 const Util = {};
 const jwt = require("jsonwebtoken");
+const { request } = require("express");
 require("dotenv").config();
 
 /* ************************
@@ -44,6 +47,53 @@ Util.buildClassificationSelect = async function (selected = 0) {
   return options;
 };
 
+Util.buildUserSelect = async function (selected = 0) {
+  let users = [];
+  users = await accountModel.getAllAccounts();
+  let select = "";
+  select += `<label for="message_to">Recipient:</label>
+  <select id="message_to" name="message_to">
+    <option disabled ${
+      selected === 0 ? "selected" : ""
+    }>Choose a recipient</option>`;
+  users.forEach((row) => {
+    select += `<option ${
+      parseInt(selected) === row.account_id ? "selected" : ""
+    } value="${row.account_id}">${row.account_firstname} ${
+      row.account_lastname
+    }</option>`;
+  });
+  select += `</select><br/>`;
+  return select;
+};
+
+Util.buildInboxRows = async function (messages) {
+  let rows = "";
+
+  messages.forEach(async (message) => {
+    rows += `
+    <tr>
+      <td><a href="/account/inbox/${
+        message.message_id
+      }">${message.message_created.toLocaleString("en-US")}</a></td>
+      <td><a href="/account/inbox/${message.message_id}">${
+      message.message_subject
+    }</a></td>
+      <td><a href="/account/inbox/${message.message_id}">${
+      message.account_firstname
+    } ${message.account_lastname}</a></td>
+      <td><a href="/account/inbox/${message.message_id}">${
+      message.message_read
+    }</a></td>
+      <td><a href="/account/inbox/${message.message_id}">${
+      message.message_archived
+    }</a></td>
+    </tr>
+    `;
+  });
+  return rows;
+};
+
 /* **************************************
  * Build the classification view HTML
  * ************************************ */
@@ -52,7 +102,7 @@ Util.buildClassificationGrid = async function (data) {
   if (data.length > 0) {
     grid = '<ul id="inv-display">';
     data.forEach((vehicle) => {
-      grid += '<div class="inv-item">';
+      grid += '<li class="inv-item">';
       grid +=
         '<a href="../../inv/detail/' +
         vehicle.inv_id +
@@ -88,7 +138,7 @@ Util.buildClassificationGrid = async function (data) {
         new Intl.NumberFormat("en-US").format(vehicle.inv_price) +
         "</span>";
       grid += "</div>";
-      grid += "</div>";
+      grid += "</li>";
     });
     grid += "</ul>";
   } else {
@@ -145,7 +195,7 @@ Util.checkJWTToken = (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       function (err, accountData) {
         if (err) {
-          req.flash("Please log in");
+          req.flash("# 1 Please log in");
           res.clearCookie("jwt");
           return res.redirect("/account/login");
         }
@@ -160,7 +210,6 @@ Util.checkJWTToken = (req, res, next) => {
 };
 
 Util.checkIfAuthorized = (req, res, next) => {
-  console.log(res.locals.accountData);
   if (
     res.locals.accountData?.account_type === "Admin" ||
     res.locals.accountData?.account_type === "Employee"
@@ -179,7 +228,22 @@ Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
     next();
   } else {
-    req.flash("notice", "Please log in.");
+    req.flash("notice", "#2 Please log in.");
+    return res.redirect("/account/login");
+  }
+};
+
+Util.checkMessageView = async (req, res, next) => {
+  const message_id = req.params.messageId;
+  const message = await messageModel.getMessageById(message_id);
+  console.log(message);
+  if (
+    parseInt(res.locals.accountData.account_id) === message.message_from ||
+    parseInt(res.locals.accountData.account_id) === message.message_to
+  ) {
+    next();
+  } else {
+    req.flash("notice", "#3 Please log in.");
     return res.redirect("/account/login");
   }
 };

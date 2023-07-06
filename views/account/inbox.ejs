@@ -1,0 +1,24 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+<h2>Welcome <%-fname%>!</h2>
+<h3>Message Center</h3>
+<ul>
+  <li>You have <%- unread %> unread messages</li>
+</ul>
+<a href="inbox/newMessage">Compose New Message</a>
+<a href="inbox/archive">View Archive</a>
+<table>
+  <thead>
+    <tr>
+      <th>Received</th>
+      <th>Subject</th>
+      <th>From</th>
+      <th>Read</th>
+      <th>Archived</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- inboxRows %>
+  </tbody>
+</table>

@@ -1,5 +1,7 @@
 const utilities = require("../utilities");
 const accountModel = require("../models/account-model");
+const messageModel = require("../models/message-model");
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Util = require("../utilities");
@@ -122,19 +124,160 @@ async function accountLogin(req, res) {
 
 async function buildManagement(req, res) {
   let nav = await utilities.getNav();
-  // console.log(res.locals.accountData);
+  let unreadMessages = await messageModel.getUnreadMessages(
+    res.locals.accountData.account_id
+  );
+  let unread = unreadMessages;
   let fname = res.locals.accountData.account_firstname;
   return res.status(200).render("account/myaccount", {
     title: "Account Management",
     nav,
     fname,
     errors: null,
+    unread,
   });
+}
+
+// INBOX PAGE
+async function buildInboxPage(req, res) {
+  let nav = await utilities.getNav();
+  let unreadMessages = await messageModel.getUnreadMessages(
+    res.locals.accountData.account_id
+  );
+  let allMessages = await messageModel.getMessages(
+    res.locals.accountData.account_id
+  );
+  let inboxRows = await utilities.buildInboxRows(allMessages);
+  let unread = unreadMessages;
+  const fname = res.locals.accountData.account_firstname;
+  return res.status(200).render("account/inbox", {
+    title: "My Inbox",
+    nav,
+    errors: null,
+    fname,
+    unread,
+    inboxRows,
+  });
+}
+async function buildInboxArchivedPage(req, res) {
+  let nav = await utilities.getNav();
+  let unreadMessages = await messageModel.getUnreadMessages(
+    res.locals.accountData.account_id
+  );
+  let allMessages = await messageModel.getArchivedMessages(
+    res.locals.accountData.account_id
+  );
+  let inboxRows = await utilities.buildInboxRows(allMessages);
+  let unread = unreadMessages;
+  const fname = res.locals.accountData.account_firstname;
+  return res.status(200).render("account/archive", {
+    title: "My Archive",
+    nav,
+    errors: null,
+    fname,
+    unread,
+    inboxRows,
+  });
+}
+
+async function buildDetailMessageView(req, res) {
+  let nav = await utilities.getNav();
+  const message_id = req.params.messageId;
+  const message = await messageModel.getMessageById(message_id);
+  if (res.locals.accountData)
+    return res.status(200).render("account/message", {
+      title: `From ${message.account_firstname} ${message.account_lastname} `,
+      nav,
+      errors: null,
+      message,
+    });
+}
+
+async function buildReplyMessageView(req, res) {
+  let nav = await utilities.getNav();
+  const message_id = req.params.messageId;
+  const message = await messageModel.getMessageById(message_id);
+  let reply_subject = `RE: ${message.message_subject}`;
+  let reply_body = "";
+  if (res.locals.accountData)
+    return res.status(200).render("account/reply", {
+      title: `Reply to ${message.account_firstname} ${message.account_lastname} `,
+      nav,
+      errors: null,
+      message,
+      reply_subject,
+      reply_body,
+    });
+}
+
+async function markMessageAsArchived(req, res) {
+  const message_id = req.params.messageId;
+  const message = await messageModel.markMessageAsArchived(message_id);
+  console.log(message);
+  req.flash("notice", `Message was Archived.`);
+  return res.status(200).redirect(`${message_id}`);
+}
+
+async function markMessageAsRead(req, res) {
+  const message_id = req.params.messageId;
+  const message = await messageModel.markMessageAsRead(message_id);
+  console.log(message);
+  req.flash("notice", `Message was marked read.`);
+  return res.status(200).redirect(`${message_id}`);
+}
+
+// COMPOSE MESSAGE PAGE
+async function buildNewMessagePage(req, res) {
+  let nav = await utilities.getNav();
+  let userSelect = await utilities.buildUserSelect();
+  let subject = "";
+  let message_body = "";
+  const fname = res.locals.accountData.account_firstname;
+  return res.status(200).render("account/newMessage", {
+    title: "Compose New Message",
+    nav,
+    errors: null,
+    fname,
+    subject,
+    message_body,
+    userSelect,
+  });
+}
+
+async function sendMessage(req, res) {
+  let nav = await utilities.getNav();
+  const messageObject = req.body;
+
+  const sentMessage = await messageModel.sendMessage(
+    messageObject.message_to,
+    messageObject.subject,
+    messageObject.body,
+    res.locals.accountData.account_id
+  );
+  req.flash("notice", `Message was successfully sent.`);
+  res.redirect("/account/inbox");
+}
+
+async function sendReply(req, res) {
+  let nav = await utilities.getNav();
+  const messageObject = req.body;
+
+  const sentMessage = await messageModel.sendMessage(
+    messageObject.message_to,
+    messageObject.subject,
+    messageObject.original_message +
+      "\r\n////////////Start Reply//////////////\r\n" +
+      messageObject.body,
+    res.locals.accountData.account_id
+  );
+  req.flash("notice", `Message was successfully sent.`);
+  res.redirect("/account/inbox");
 }
 
 async function buildUpdatePage(req, res) {
   let nav = await utilities.getNav();
-  const accountId = parseInt(req.params.accountId);
+  const account_firstname = res.locals.accountData.account_firstname;
+
   return res.status(200).render("account/update", {
     title: "Update Account",
     nav,
@@ -151,7 +294,6 @@ async function updateAccount(req, res, next) {
     updated_user.account_email,
     updated_user.account_id
   );
-  // console.log(updateResult);
   if (updateResult) {
     const accountData = await accountModel.getAccountByEmail(
       updated_user.account_email
@@ -227,4 +369,13 @@ module.exports = {
   updateAccount,
   updatePassword,
   logout,
+  buildInboxPage,
+  buildInboxArchivedPage,
+  buildNewMessagePage,
+  sendMessage,
+  buildDetailMessageView,
+  markMessageAsRead,
+  buildReplyMessageView,
+  sendReply,
+  markMessageAsArchived,
 };

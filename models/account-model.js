@@ -65,6 +65,17 @@ async function getAccountById(account_id) {
   }
 }
 
+async function getAllAccounts() {
+  try {
+    const result = await pool.query(
+      "SELECT account_id, account_firstname, account_lastname, account_email, account_type FROM account "
+    );
+    return result.rows;
+  } catch (error) {
+    return new Error("No matching user found");
+  }
+}
+
 async function updateAccount(firstName, lastName, email, accountId) {
   try {
     const sql = `UPDATE public.account set account_firstname = $1, account_lastname = $2, account_email = $3 where account_id = $4 RETURNING *`;
@@ -94,4 +105,5 @@ module.exports = {
   updateAccount,
   updatePassword,
   getAccountById,
+  getAllAccounts,
 };

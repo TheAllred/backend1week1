@@ -21,10 +21,12 @@ router.get(
 
 router.get(
   "/edit/:inventoryId",
+  utilities.checkLogin,
   utilities.handleErrors(invController.buildInventoryManagementPage)
 );
 router.get(
   "/delete/:inventoryId",
+  utilities.checkLogin,
   utilities.handleErrors(invController.buildDeleteConfirmationPage)
 );
 
@@ -41,20 +43,24 @@ router.get(
 
 router.get(
   "/newclassification",
+  utilities.checkLogin,
   utilities.handleErrors(invController.buildNewClassificationPage)
 );
 router.post(
   "/newclassification",
+  utilities.checkLogin,
   classValidate.classificationRules(),
   classValidate.checkClassificationData,
   utilities.handleErrors(invController.createNewClassification)
 );
 router.get(
   "/newvehicle",
+  utilities.checkLogin,
   utilities.handleErrors(invController.buildNewInventoryPage)
 );
 router.post(
   "/newvehicle",
+  utilities.checkLogin,
   invValidate.inventoryRules(),
   invValidate.checkInventoryData,
   utilities.handleErrors(invController.createNewVehicle)
@@ -62,11 +68,16 @@ router.post(
 
 router.post(
   "/update",
+  utilities.checkLogin,
   invValidate.inventoryRules(),
   invValidate.checkUpdateData,
   utilities.handleErrors(invController.updateVehicle)
 );
 
-router.post("/delete", utilities.handleErrors(invController.deleteVehicle));
+router.post(
+  "/delete",
+  utilities.checkLogin,
+  utilities.handleErrors(invController.deleteVehicle)
+);
 
 module.exports = router;
