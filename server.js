@@ -61,8 +61,11 @@ app.use(require("./routes/static"));
 app.get("/", utilities.handleErrors(baseController.buildHome));
 // Inventory routes
 app.use("/inv", require("./routes/inventoryRoute"));
+// Message Routes
+app.use("/inbox", require("./routes/inboxRoute"));
 // Account routes
 app.use("/account", require("./routes/accountRoute"));
+
 // custom route
 app.get("/error", utilities.handleErrors(utilities.causeError));
 

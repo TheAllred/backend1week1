@@ -1,0 +1,21 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+<section class="inbox">
+  <%- messages() %>
+  <a href="/inbox">Return to Inbox</a>
+  <table>
+    <thead>
+      <tr>
+        <th>Received</th>
+        <th>Subject</th>
+        <th>From</th>
+        <th>Read</th>
+        <th>Archived</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%- inboxRows %>
+    </tbody>
+  </table>
+</section>

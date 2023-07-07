@@ -254,3 +254,264 @@ button:hover {
 .signup {
   text-align: center;
 }
+
+.inbox {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.inbox a {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  text-decoration: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+}
+
+.inbox a:hover {
+  background-color: #ddd;
+}
+
+/* Style the table */
+.inbox_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Style the table header */
+.inbox_table thead th {
+  background-color: #f2f2f2;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Style the table rows */
+.inbox_table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.inbox_table tbody tr:hover {
+  background-color: #e2e2e2;
+}
+
+/* Style the table cells */
+.inbox_table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.inbox_table td a {
+  text-decoration: none;
+  color: black;
+}
+
+.message_detail {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.message_detail h1 {
+  font-size: 24px;
+}
+
+.message_detail h3 {
+  font-size: 18px;
+}
+
+.message_detail textarea {
+  width: 100%;
+  height: 200px;
+  resize: vertical;
+}
+
+.message_detail button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.message_detail button:hover {
+  background-color: #ddd;
+}
+
+.message_detail a {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  text-decoration: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+}
+
+.message_detail a:hover {
+  background-color: #ddd;
+}
+
+.reply {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.reply h1 {
+  font-size: 24px;
+}
+
+.reply h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.reply ul.notice {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.reply ul.notice li {
+  color: red;
+}
+
+.reply textarea#body {
+  width: 100%;
+  height: 200px;
+  resize: vertical;
+}
+
+.reply label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.reply input[type="text"],
+.reply  select,
+.reply  textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.reply button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reply button:hover {
+  background-color: #ddd;
+}
+
+.reply a {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  text-decoration: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+}
+
+.reply a:hover {
+  background-color: #ddd;
+}
+
+
+ 
+
+
+.new_message {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.new_message h1 {
+  font-size: 24px;
+}
+
+.new_message h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.new_message ul.notice {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.new_message ul.notice li {
+  color: red;
+}
+
+.new_message textarea#body {
+  width: 100%;
+  height: 200px;
+  resize: vertical;
+}
+
+.new_message label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.new_message input[type="text"],
+.new_message  select,
+.new_message  textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.new_message button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.new_message button:hover {
+  background-color: #ddd;
+}
+
+.new_message a {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  text-decoration: none;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 4px;
+}
+
+.new_message a:hover {
+  background-color: #ddd;
+}

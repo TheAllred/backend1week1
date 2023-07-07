@@ -1,0 +1,23 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %> <%- messages() %>
+
+<section class="message_detail">
+  <h3><%- message.message_subject %></h3>
+  <textarea readonly cols="60" rows="30"><%- message.message_body %></textarea>
+  <p><%- message.message_created %></p>
+  <% if (!message.message_read) { %>
+  <form action="<%- message.message_id %>" method="post">
+    <button type="submit">Mark as read</button>
+  </form>
+  <% } %> <% if (!message.message_archived) { %>
+  <form action="archive/<%- message.message_id %>" method="post">
+    <button type="submit">Archive</button>
+  </form>
+  <a href="/inbox/reply/<%- message.message_id %>">Reply</a>
+  <% } %>
+  <form action="delete/<%- message.message_id %>" method="post">
+    <button type="submit">Delete</button>
+  </form>
+  <a href="/inbox">Return to inbox</a>
+</section>

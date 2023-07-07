@@ -73,19 +73,19 @@ Util.buildInboxRows = async function (messages) {
   messages.forEach(async (message) => {
     rows += `
     <tr>
-      <td><a href="/account/inbox/${
+      <td><a href="/inbox/${
         message.message_id
       }">${message.message_created.toLocaleString("en-US")}</a></td>
-      <td><a href="/account/inbox/${message.message_id}">${
+      <td><a href="/inbox/${message.message_id}">${
       message.message_subject
     }</a></td>
-      <td><a href="/account/inbox/${message.message_id}">${
-      message.account_firstname
-    } ${message.account_lastname}</a></td>
-      <td><a href="/account/inbox/${message.message_id}">${
+      <td><a href="/inbox/${message.message_id}">${message.account_firstname} ${
+      message.account_lastname
+    }</a></td>
+      <td><a href="/inbox/${message.message_id}">${
       message.message_read
     }</a></td>
-      <td><a href="/account/inbox/${message.message_id}">${
+      <td><a href="/inbox/${message.message_id}">${
       message.message_archived
     }</a></td>
     </tr>
@@ -195,7 +195,7 @@ Util.checkJWTToken = (req, res, next) => {
       process.env.ACCESS_TOKEN_SECRET,
       function (err, accountData) {
         if (err) {
-          req.flash("# 1 Please log in");
+          req.flash("Please log in");
           res.clearCookie("jwt");
           return res.redirect("/account/login");
         }
@@ -228,7 +228,7 @@ Util.checkLogin = (req, res, next) => {
   if (res.locals.loggedin) {
     next();
   } else {
-    req.flash("notice", "#2 Please log in.");
+    req.flash("notice", "Please log in.");
     return res.redirect("/account/login");
   }
 };
@@ -238,12 +238,12 @@ Util.checkMessageView = async (req, res, next) => {
   const message = await messageModel.getMessageById(message_id);
   console.log(message);
   if (
-    parseInt(res.locals.accountData.account_id) === message.message_from ||
-    parseInt(res.locals.accountData.account_id) === message.message_to
+    parseInt(res.locals.accountData.account_id) === message?.message_from ||
+    parseInt(res.locals.accountData.account_id) === message?.message_to
   ) {
     next();
   } else {
-    req.flash("notice", "#3 Please log in.");
+    req.flash("notice", "Please log in.");
     return res.redirect("/account/login");
   }
 };

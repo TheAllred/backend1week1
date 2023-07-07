@@ -17,7 +17,8 @@ async function getMessages(account_id) {
        account.account_lastname 
        FROM message 
        JOIN account ON message.message_from = account.account_id 
-       WHERE message.message_to = $1 AND message.message_archived = false;`,
+       WHERE message.message_to = $1 AND message.message_archived = false 
+       ORDER BY message.message_created DESC;`,
       [account_id]
     );
 
@@ -81,6 +82,22 @@ async function getMessageById(message_id) {
   }
 }
 
+async function deleteMessage(message_id) {
+  const sql = String.raw;
+  try {
+    const result = await pool.query(
+      sql`DELETE
+      FROM message 
+      WHERE message.message_id = $1;`,
+      [message_id]
+    );
+
+    return result.rows[0];
+  } catch (error) {
+    return new Error("Could not delete message");
+  }
+}
+
 async function markMessageAsRead(message_id) {
   try {
     const result = await pool.query(
@@ -97,7 +114,7 @@ async function markMessageAsRead(message_id) {
 async function markMessageAsArchived(message_id) {
   try {
     const result = await pool.query(
-      "UPDATE message SET message_archived = true where message_id = $1 RETURNING *",
+      "UPDATE message SET message_archived = true,message_read = true where message_id = $1 RETURNING *",
       [message_id]
     );
 
@@ -110,7 +127,19 @@ async function markMessageAsArchived(message_id) {
 async function getUnreadMessages(account_id) {
   try {
     const result = await pool.query(
-      "SELECT * FROM message WHERE message_to = $1 AND message_read = 'false' ",
+      "SELECT * FROM message WHERE message_to = $1 AND message_read = 'false' AND message_archived = 'false' ",
+      [account_id]
+    );
+
+    return result.rowCount;
+  } catch (error) {
+    return new Error("Could not count unread messages");
+  }
+}
+async function getArchivedMessageCount(account_id) {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM message WHERE message_to = $1  AND message_archived = 'true' ",
       [account_id]
     );
 
@@ -135,8 +164,10 @@ module.exports = {
   getMessages,
   getUnreadMessages,
   getArchivedMessages,
+  getArchivedMessageCount,
   sendMessage,
   getMessageById,
   markMessageAsRead,
   markMessageAsArchived,
+  deleteMessage,
 };

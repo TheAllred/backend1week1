@@ -1,0 +1,30 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+<section class="new_message">
+  <%- messages() %> <% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+  <% } %>
+  <h3>New Message</h3>
+  <form method="POST" action="/inbox/newMessage">
+    <%- userSelect %>
+    <label for="subject">Subject:</label>
+    <input
+      type="text"
+      id="subject"
+      name="subject"
+      required
+      value="<%=subject%>"
+    />
+
+    <label for="body">Body:</label><br />
+    <textarea id="body" name="body" required><%= message_body %></textarea>
+
+    <button type="submit">Send</button>
+  </form>
+  <a href="/inbox">Return to inbox</a>
+</section>

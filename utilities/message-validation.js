@@ -42,7 +42,7 @@ validate.checkNewMessage = async (req, res, next) => {
     let nav = await utilities.getNav();
     let userSelect = await utilities.buildUserSelect(message_to);
     const fname = res.locals.accountData.account_firstname;
-    res.status(201).render("account/newMessage", {
+    res.status(201).render("inbox/newMessage", {
       title: "Compose New Message",
       nav,
       errors,

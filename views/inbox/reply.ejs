@@ -1,0 +1,45 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
+<section class="reply">
+  <%- messages() %> <% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+  <% } %>
+  <h3>New Reply</h3>
+  <form method="POST" action="/inbox/reply/<%= message.message_id %>">
+    <label for="body">Replying to:</label><br />
+    <textarea id="body" name="original_message" required readonly>
+  From: <%= message.account_firstname %> <%= message.account_lastname %>
+  Subject: <%= message.message_subject %>
+  Body: <%= message.message_body %>
+  Sent at: <%= message.message_created %>
+  </textarea
+    >
+    <br />
+    <label for="message_to">To:</label>
+    <select name="message_to">
+      <option value="<%= message.message_to %>">
+        <%= message.account_firstname %> <%= message.account_lastname %>
+      </option>
+    </select>
+    <br />
+    <label for="subject">Subject:</label>
+    <input
+      type="text"
+      id="subject"
+      name="subject"
+      required
+      value="<%=reply_subject%>"
+    />
+
+    <label for="body">Body:</label><br />
+    <textarea id="body" name="body" required><%= reply_body %></textarea>
+
+    <button type="submit">Send</button>
+  </form>
+  <a href="/inbox">Return to inbox</a>
+</section>
