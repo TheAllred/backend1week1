@@ -45,7 +45,8 @@ async function getArchivedMessages(account_id) {
        account.account_lastname 
        FROM message 
        JOIN account ON message.message_from = account.account_id 
-       WHERE message.message_to = $1 AND message.message_archived = true;`,
+       WHERE message.message_to = $1 AND message.message_archived = true
+       ORDER BY message.message_created DESC;`,
       [account_id]
     );
 

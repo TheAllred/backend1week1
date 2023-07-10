@@ -92,7 +92,7 @@ validate.checkNewReply = async (req, res, next) => {
   errors = validationResult(req);
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    return res.status(200).render("account/reply", {
+    return res.status(200).render("inbox/reply", {
       title: `Reply to ${message.account_firstname} ${message.account_lastname} `,
       nav,
       errors,
