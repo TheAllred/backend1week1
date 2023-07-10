@@ -52,7 +52,7 @@ Util.buildUserSelect = async function (selected = 0) {
   users = await accountModel.getAllAccounts();
   let select = "";
   select += `<label for="message_to">Recipient:</label>
-  <select id="message_to" name="message_to">
+  <select required id="message_to" name="message_to">
     <option disabled ${
       selected === 0 ? "selected" : ""
     }>Choose a recipient</option>`;
@@ -236,11 +236,7 @@ Util.checkLogin = (req, res, next) => {
 Util.checkMessageView = async (req, res, next) => {
   const message_id = req.params.messageId;
   const message = await messageModel.getMessageById(message_id);
-  console.log(message);
-  if (
-    parseInt(res.locals.accountData.account_id) === message?.message_from ||
-    parseInt(res.locals.accountData.account_id) === message?.message_to
-  ) {
+  if (parseInt(res.locals.accountData.account_id) === message?.message_to) {
     next();
   } else {
     req.flash("notice", "Please log in.");
