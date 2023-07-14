@@ -55,7 +55,7 @@ Util.buildUserSelect = async function (selected = 0) {
   <select required id="message_to" name="message_to">
     <option disabled ${
       selected === 0 ? "selected" : ""
-    }>Choose a recipient</option>`;
+    } value=''>Choose a recipient</option>`;
   users.forEach((row) => {
     select += `<option ${
       parseInt(selected) === row.account_id ? "selected" : ""

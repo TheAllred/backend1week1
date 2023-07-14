@@ -375,6 +375,23 @@ button:hover {
   margin-bottom: 10px;
 }
 
+
+.notice li {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.error li {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
 .reply ul.notice {
   list-style-type: none;
   margin: 0;
@@ -486,6 +503,18 @@ button:hover {
   border-radius: 4px;
   box-sizing: border-box;
   margin-bottom: 10px;
+}
+
+.new_message input[type="text"]:invalid:focus,
+.new_message  select:invalid:focus,
+.new_message  textarea:invalid:focus {
+  background-color:pink;
+}
+
+.reply input[type="text"]:invalid:focus,
+.reply  select:invalid:focus,
+.reply  textarea:invalid:focus {
+  background-color:pink;
 }
 
 .new_message button {
