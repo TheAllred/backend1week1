@@ -3,7 +3,7 @@
 <% } else { res.redirect('/') } %>
 <section class="new_message">
   <%- messages() %> <% if (errors) { %>
-  <ul class="notice">
+  <ul class="error">
     <% errors.array().forEach(error => { %>
     <li><%= error.msg %></li>
     <% }) %>
