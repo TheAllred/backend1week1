@@ -11,8 +11,8 @@
   <% } %>
   <h3>New Reply</h3>
   <form method="POST" action="/inbox/reply/<%= message.message_id %>">
-    <label for="body">Replying to:</label><br />
-    <textarea id="body" name="original_message" required readonly>
+    <label for="original_body">Replying to:</label><br />
+    <textarea id="original_body" name="original_message" required readonly>
   From: <%= message.account_firstname %> <%= message.account_lastname %>
   Subject: <%= message.message_subject %>
   Body: <%= message.message_body %>
